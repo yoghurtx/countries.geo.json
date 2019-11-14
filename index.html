@@ -1,0 +1,182 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	
+	<title>Choropleth Tutorial - Leaflet</title>
+
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+	<link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ==" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js" integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og==" crossorigin=""></script>
+
+
+	<style>
+		html, body {
+			height: 100%;
+			margin: 0;
+		}
+		#map {
+			width: 600px;
+			height: 400px;
+		}
+	</style>
+
+	<style>#map { width: 800px; height: 500px; }
+.info { padding: 6px 8px; font: 14px/16px Arial, Helvetica, sans-serif; background: white; background: rgba(255,255,255,0.8); box-shadow: 0 0 15px rgba(0,0,0,0.2); border-radius: 5px; } .info h4 { margin: 0 0 5px; color: #777; }
+.legend { text-align: left; line-height: 18px; color: #555; } .legend i { width: 18px; height: 18px; float: left; margin-right: 8px; opacity: 0.7; }</style>
+</head>
+<body>
+
+<div id='map'></div>
+
+<script type="text/javascript" src="./medium.geo.js"></script>
+<script type="text/javascript">
+  var mapJson='[{"COUNTRY":"Albania","COUNTRY_CODE":"ALB","TOTAL_SCORE":0.0,"LATITUDE":41.1533,"LONGITUDE":20.1683},{"COUNTRY":"Algeria","COUNTRY_CODE":"DZA","TOTAL_SCORE":0.0,"LATITUDE":28.0339,"LONGITUDE":1.65963},{"COUNTRY":"Angola","COUNTRY_CODE":"AGO","TOTAL_SCORE":0.0,"LATITUDE":-11.2027,"LONGITUDE":17.8739},{"COUNTRY":"Argentina","COUNTRY_CODE":"ARG","TOTAL_SCORE":0.0,"LATITUDE":-38.4161,"LONGITUDE":-63.6167},{"COUNTRY":"Armenia","COUNTRY_CODE":"ARM","TOTAL_SCORE":0.0,"LATITUDE":40.0691,"LONGITUDE":45.0382},{"COUNTRY":"Australia","COUNTRY_CODE":"AUS","TOTAL_SCORE":5.0,"LATITUDE":-25.2744,"LONGITUDE":133.775},{"COUNTRY":"Austria","COUNTRY_CODE":"AUT","TOTAL_SCORE":1.0,"LATITUDE":47.5162,"LONGITUDE":14.5501},{"COUNTRY":"Azerbaidjan","COUNTRY_CODE":"AZE","TOTAL_SCORE":0.0,"LATITUDE":40.1431,"LONGITUDE":47.5769},{"COUNTRY":"Bahrain","COUNTRY_CODE":"BHR","TOTAL_SCORE":0.0,"LATITUDE":25.9304,"LONGITUDE":50.6378},{"COUNTRY":"Bangladesh","COUNTRY_CODE":"BGD","TOTAL_SCORE":0.0,"LATITUDE":23.685,"LONGITUDE":90.3563},{"COUNTRY":"Belarus","COUNTRY_CODE":"BLR","TOTAL_SCORE":0.0,"LATITUDE":53.7098,"LONGITUDE":27.9534},{"COUNTRY":"Belgium","COUNTRY_CODE":"BEL","TOTAL_SCORE":5.0,"LATITUDE":50.5039,"LONGITUDE":4.46994},{"COUNTRY":"Benin","COUNTRY_CODE":"BEN","TOTAL_SCORE":0.0,"LATITUDE":9.30769,"LONGITUDE":2.31583},{"COUNTRY":"Bermuda","COUNTRY_CODE":"BMU","TOTAL_SCORE":0.0,"LATITUDE":32.3214,"LONGITUDE":-64.7574},{"COUNTRY":"Bolivia","COUNTRY_CODE":"BOL","TOTAL_SCORE":0.0,"LATITUDE":-16.2902,"LONGITUDE":-63.5887},{"COUNTRY":"Bosnia & Herzegovina","COUNTRY_CODE":"BIH","TOTAL_SCORE":0.0,"LATITUDE":43.9159,"LONGITUDE":17.6791},{"COUNTRY":"Botswana","COUNTRY_CODE":"BWA","TOTAL_SCORE":0.0,"LATITUDE":-22.3285,"LONGITUDE":24.6849},{"COUNTRY":"Brazil","COUNTRY_CODE":"BRA","TOTAL_SCORE":8.0,"LATITUDE":-14.235,"LONGITUDE":-51.9253},{"COUNTRY":"Bulgaria","COUNTRY_CODE":"BGR","TOTAL_SCORE":0.0,"LATITUDE":42.7339,"LONGITUDE":25.4858},{"COUNTRY":"Burkina Faso","COUNTRY_CODE":"BFA","TOTAL_SCORE":0.0,"LATITUDE":12.2383,"LONGITUDE":-1.56159},{"COUNTRY":"Burundi","COUNTRY_CODE":"BDI","TOTAL_SCORE":0.0,"LATITUDE":-3.37306,"LONGITUDE":29.9189},{"COUNTRY":"Cameroon","COUNTRY_CODE":"CMR","TOTAL_SCORE":0.0,"LATITUDE":7.36972,"LONGITUDE":12.3547},{"COUNTRY":"Canada","COUNTRY_CODE":"CAN","TOTAL_SCORE":6.0,"LATITUDE":56.1304,"LONGITUDE":-106.347},{"COUNTRY":"Central African Republic","COUNTRY_CODE":"CAF","TOTAL_SCORE":0.0,"LATITUDE":6.61111,"LONGITUDE":20.9394},{"COUNTRY":"Chile","COUNTRY_CODE":"CHL","TOTAL_SCORE":4.0,"LATITUDE":-35.6751,"LONGITUDE":-71.543},{"COUNTRY":"China","COUNTRY_CODE":"CHN","TOTAL_SCORE":7.0,"LATITUDE":35.8617,"LONGITUDE":104.195},{"COUNTRY":"Colombia","COUNTRY_CODE":"COL","TOTAL_SCORE":0.0,"LATITUDE":4.57087,"LONGITUDE":-74.2973},{"COUNTRY":"Congo","COUNTRY_CODE":"COG","TOTAL_SCORE":0.0,"LATITUDE":-0.228021,"LONGITUDE":15.8277},{"COUNTRY":"Costa Rica","COUNTRY_CODE":"CRI","TOTAL_SCORE":0.0,"LATITUDE":9.74892,"LONGITUDE":-83.7534},{"COUNTRY":"Croatia","COUNTRY_CODE":"HRV","TOTAL_SCORE":0.0,"LATITUDE":45.1,"LONGITUDE":15.2},{"COUNTRY":"Cuba","COUNTRY_CODE":"CUB","TOTAL_SCORE":0.0,"LATITUDE":21.5218,"LONGITUDE":-77.7812},{"COUNTRY":"Cyprus","COUNTRY_CODE":"CYP","TOTAL_SCORE":0.0,"LATITUDE":35.1264,"LONGITUDE":33.4299},{"COUNTRY":"Czech Republic","COUNTRY_CODE":"CZE","TOTAL_SCORE":5.0,"LATITUDE":49.8175,"LONGITUDE":15.473},{"COUNTRY":"Denmark","COUNTRY_CODE":"DNK","TOTAL_SCORE":0.0,"LATITUDE":56.2639,"LONGITUDE":9.50179},{"COUNTRY":"Djibouti Republic","COUNTRY_CODE":"DJI","TOTAL_SCORE":0.0,"LATITUDE":11.8251,"LONGITUDE":42.5903},{"COUNTRY":"Dominican Republic","COUNTRY_CODE":"DOM","TOTAL_SCORE":0.0,"LATITUDE":18.7357,"LONGITUDE":-70.1627},{"COUNTRY":"Ecuador","COUNTRY_CODE":"ECU","TOTAL_SCORE":0.0,"LATITUDE":-1.83124,"LONGITUDE":-78.1834},{"COUNTRY":"Egypt","COUNTRY_CODE":"EGY","TOTAL_SCORE":0.0,"LATITUDE":26.8206,"LONGITUDE":30.8025},{"COUNTRY":"El Salvador","COUNTRY_CODE":"SLV","TOTAL_SCORE":0.0,"LATITUDE":13.7942,"LONGITUDE":-88.8965},{"COUNTRY":"Estonia","COUNTRY_CODE":"EST","TOTAL_SCORE":7.0,"LATITUDE":58.5953,"LONGITUDE":25.0136},{"COUNTRY":"Ethiopia","COUNTRY_CODE":"ETH","TOTAL_SCORE":0.0,"LATITUDE":9.145,"LONGITUDE":40.4897},{"COUNTRY":"Finland","COUNTRY_CODE":"FIN","TOTAL_SCORE":1.0,"LATITUDE":61.9241,"LONGITUDE":25.7482},{"COUNTRY":"France","COUNTRY_CODE":"FRA","TOTAL_SCORE":4.0,"LATITUDE":46.2276,"LONGITUDE":2.21375},{"COUNTRY":"Gabon","COUNTRY_CODE":"GAB","TOTAL_SCORE":0.0,"LATITUDE":-0.803689,"LONGITUDE":11.6094},{"COUNTRY":"Gambia","COUNTRY_CODE":"GMB","TOTAL_SCORE":0.0,"LATITUDE":13.4432,"LONGITUDE":-15.3101},{"COUNTRY":"Georgia","COUNTRY_CODE":"GEO","TOTAL_SCORE":0.0,"LATITUDE":42.3154,"LONGITUDE":43.3569},{"COUNTRY":"Germany","COUNTRY_CODE":"DEU","TOTAL_SCORE":4.0,"LATITUDE":51.1657,"LONGITUDE":10.4515},{"COUNTRY":"Ghana","COUNTRY_CODE":"GHA","TOTAL_SCORE":0.0,"LATITUDE":7.94653,"LONGITUDE":-1.02319},{"COUNTRY":"Greece","COUNTRY_CODE":"GRC","TOTAL_SCORE":6.0,"LATITUDE":39.0742,"LONGITUDE":21.8243},{"COUNTRY":"Guatemala","COUNTRY_CODE":"GTM","TOTAL_SCORE":0.0,"LATITUDE":15.7835,"LONGITUDE":-90.2308},{"COUNTRY":"Guinea","COUNTRY_CODE":"GIN","TOTAL_SCORE":0.0,"LATITUDE":9.94559,"LONGITUDE":-9.69664},{"COUNTRY":"Guyana & Suriname","COUNTRY_CODE":"GUY","TOTAL_SCORE":0.0,"LATITUDE":4.86042,"LONGITUDE":-58.9302},{"COUNTRY":"Haiti","COUNTRY_CODE":"HTI","TOTAL_SCORE":0.0,"LATITUDE":18.9712,"LONGITUDE":-72.2852},{"COUNTRY":"Honduras","COUNTRY_CODE":"HND","TOTAL_SCORE":0.0,"LATITUDE":15.2,"LONGITUDE":-86.2419},{"COUNTRY":"Hong Kong, region of China","COUNTRY_CODE":"HKG","TOTAL_SCORE":8.0,"LATITUDE":22.3964,"LONGITUDE":114.109},{"COUNTRY":"Hungary","COUNTRY_CODE":"HUN","TOTAL_SCORE":7.0,"LATITUDE":47.1625,"LONGITUDE":19.5033},{"COUNTRY":"Iceland","COUNTRY_CODE":"ISL","TOTAL_SCORE":0.0,"LATITUDE":64.9631,"LONGITUDE":-19.0208},{"COUNTRY":"India","COUNTRY_CODE":"IND","TOTAL_SCORE":0.0,"LATITUDE":20.5937,"LONGITUDE":78.9629},{"COUNTRY":"Indonesia","COUNTRY_CODE":"IDN","TOTAL_SCORE":0.0,"LATITUDE":-0.789275,"LONGITUDE":113.921},{"COUNTRY":"Irak","COUNTRY_CODE":"IRQ","TOTAL_SCORE":0.0,"LATITUDE":33.2232,"LONGITUDE":43.6793},{"COUNTRY":"Iran Islamic Republic","COUNTRY_CODE":"IRN","TOTAL_SCORE":0.0,"LATITUDE":32.4279,"LONGITUDE":53.688},{"COUNTRY":"Ireland","COUNTRY_CODE":"IRL","TOTAL_SCORE":0.0,"LATITUDE":53.4129,"LONGITUDE":-8.24389},{"COUNTRY":"Israel","COUNTRY_CODE":"ISR","TOTAL_SCORE":0.0,"LATITUDE":31.0461,"LONGITUDE":34.8516},{"COUNTRY":"Italy","COUNTRY_CODE":"ITA","TOTAL_SCORE":7.0,"LATITUDE":41.8719,"LONGITUDE":12.5674},{"COUNTRY":"Ivory Coast","COUNTRY_CODE":"CIV","TOTAL_SCORE":0.0,"LATITUDE":7.53999,"LONGITUDE":-5.54708},{"COUNTRY":"Jamaica","COUNTRY_CODE":"JAM","TOTAL_SCORE":0.0,"LATITUDE":18.1096,"LONGITUDE":-77.2975},{"COUNTRY":"Japan","COUNTRY_CODE":"JPN","TOTAL_SCORE":4.0,"LATITUDE":36.2048,"LONGITUDE":138.253},{"COUNTRY":"Jordan","COUNTRY_CODE":"JOR","TOTAL_SCORE":0.0,"LATITUDE":30.5852,"LONGITUDE":36.2384},{"COUNTRY":"Kazakhstan","COUNTRY_CODE":"KAZ","TOTAL_SCORE":0.0,"LATITUDE":48.0196,"LONGITUDE":66.9237},{"COUNTRY":"Kenya","COUNTRY_CODE":"KEN","TOTAL_SCORE":0.0,"LATITUDE":-0.023559,"LONGITUDE":37.9062},{"COUNTRY":"Kindom of Saudi Arabia","COUNTRY_CODE":"SAU","TOTAL_SCORE":0.0,"LATITUDE":23.8859,"LONGITUDE":45.0792},{"COUNTRY":"Kirgizstan","COUNTRY_CODE":"KGZ","TOTAL_SCORE":0.0,"LATITUDE":41.2044,"LONGITUDE":74.7661},{"COUNTRY":"Kuwait","COUNTRY_CODE":"KWT","TOTAL_SCORE":0.0,"LATITUDE":29.3117,"LONGITUDE":47.4818},{"COUNTRY":"Latvia","COUNTRY_CODE":"LVA","TOTAL_SCORE":0.0,"LATITUDE":56.8796,"LONGITUDE":24.6032},{"COUNTRY":"Lebanon","COUNTRY_CODE":"LBN","TOTAL_SCORE":0.0,"LATITUDE":33.8547,"LONGITUDE":35.8623},{"COUNTRY":"Liberia","COUNTRY_CODE":"LBR","TOTAL_SCORE":0.0,"LATITUDE":6.42805,"LONGITUDE":-9.4295},{"COUNTRY":"Lithuania","COUNTRY_CODE":"LTU","TOTAL_SCORE":5.0,"LATITUDE":55.1694,"LONGITUDE":23.8813},{"COUNTRY":"Luxemburg","COUNTRY_CODE":"LUX","TOTAL_SCORE":0.0,"LATITUDE":49.8153,"LONGITUDE":6.12958},{"COUNTRY":"Madagascar","COUNTRY_CODE":"MDG","TOTAL_SCORE":0.0,"LATITUDE":-18.7669,"LONGITUDE":46.8691},{"COUNTRY":"Malawi","COUNTRY_CODE":"MWI","TOTAL_SCORE":0.0,"LATITUDE":-13.2543,"LONGITUDE":34.3015},{"COUNTRY":"Malaysia","COUNTRY_CODE":"MYS","TOTAL_SCORE":0.0,"LATITUDE":4.21048,"LONGITUDE":101.976},{"COUNTRY":"Mali","COUNTRY_CODE":"MLI","TOTAL_SCORE":0.0,"LATITUDE":17.5707,"LONGITUDE":-3.99617},{"COUNTRY":"Malta","COUNTRY_CODE":"MLT","TOTAL_SCORE":0.0,"LATITUDE":35.9375,"LONGITUDE":14.3754},{"COUNTRY":"Mauritania","COUNTRY_CODE":"MRT","TOTAL_SCORE":0.0,"LATITUDE":21.0079,"LONGITUDE":-10.9408},{"COUNTRY":"Mauritius","COUNTRY_CODE":"MUS","TOTAL_SCORE":0.0,"LATITUDE":-20.3484,"LONGITUDE":57.5522},{"COUNTRY":"Mexico","COUNTRY_CODE":"MEX","TOTAL_SCORE":0.0,"LATITUDE":23.6345,"LONGITUDE":-102.553},{"COUNTRY":"Moldova","COUNTRY_CODE":"MDA","TOTAL_SCORE":0.0,"LATITUDE":47.4116,"LONGITUDE":28.3699},{"COUNTRY":"Montenegro","COUNTRY_CODE":"MNE","TOTAL_SCORE":0.0,"LATITUDE":42.7087,"LONGITUDE":19.3744},{"COUNTRY":"Morocco","COUNTRY_CODE":"MAR","TOTAL_SCORE":0.0,"LATITUDE":31.7917,"LONGITUDE":-7.09262},{"COUNTRY":"Mozambique","COUNTRY_CODE":"MOZ","TOTAL_SCORE":0.0,"LATITUDE":-18.6657,"LONGITUDE":35.5296},{"COUNTRY":"Namibia","COUNTRY_CODE":"NAM","TOTAL_SCORE":0.0,"LATITUDE":-22.9576,"LONGITUDE":18.4904},{"COUNTRY":"Nepal","COUNTRY_CODE":"NPL","TOTAL_SCORE":0.0,"LATITUDE":28.3949,"LONGITUDE":84.124},{"COUNTRY":"Netherlands","COUNTRY_CODE":"NLD","TOTAL_SCORE":8.0,"LATITUDE":52.1326,"LONGITUDE":5.29127},{"COUNTRY":"New Zealand","COUNTRY_CODE":"NZL","TOTAL_SCORE":0.0,"LATITUDE":-40.9006,"LONGITUDE":174.886},{"COUNTRY":"Nicaragua","COUNTRY_CODE":"NIC","TOTAL_SCORE":0.0,"LATITUDE":12.8654,"LONGITUDE":-85.2072},{"COUNTRY":"Niger","COUNTRY_CODE":"NER","TOTAL_SCORE":0.0,"LATITUDE":17.6078,"LONGITUDE":8.08167},{"COUNTRY":"Nigeria","COUNTRY_CODE":"NGA","TOTAL_SCORE":0.0,"LATITUDE":9.082,"LONGITUDE":8.67528},{"COUNTRY":"Norway","COUNTRY_CODE":"NOR","TOTAL_SCORE":2.0,"LATITUDE":60.472,"LONGITUDE":8.46895},{"COUNTRY":"Oman","COUNTRY_CODE":"OMN","TOTAL_SCORE":0.0,"LATITUDE":21.5126,"LONGITUDE":55.9233},{"COUNTRY":"Pakistan","COUNTRY_CODE":"PAK","TOTAL_SCORE":0.0,"LATITUDE":30.3753,"LONGITUDE":69.3451},{"COUNTRY":"Panama","COUNTRY_CODE":"PAN","TOTAL_SCORE":0.0,"LATITUDE":8.53798,"LONGITUDE":-80.7821},{"COUNTRY":"Paraguay","COUNTRY_CODE":"PRY","TOTAL_SCORE":0.0,"LATITUDE":-23.4425,"LONGITUDE":-58.4438},{"COUNTRY":"Peru","COUNTRY_CODE":"PER","TOTAL_SCORE":0.0,"LATITUDE":-9.18997,"LONGITUDE":-75.0152},{"COUNTRY":"Philippines","COUNTRY_CODE":"PHL","TOTAL_SCORE":0.0,"LATITUDE":12.8797,"LONGITUDE":121.774},{"COUNTRY":"Poland","COUNTRY_CODE":"POL","TOTAL_SCORE":7.0,"LATITUDE":51.9194,"LONGITUDE":19.1451},{"COUNTRY":"Portugal","COUNTRY_CODE":"PRT","TOTAL_SCORE":0.0,"LATITUDE":39.3999,"LONGITUDE":-8.22445},{"COUNTRY":"Puerto Rico","COUNTRY_CODE":"PRI","TOTAL_SCORE":0.0,"LATITUDE":18.2208,"LONGITUDE":-66.5901},{"COUNTRY":"Qatar","COUNTRY_CODE":"QAT","TOTAL_SCORE":0.0,"LATITUDE":25.3548,"LONGITUDE":51.1839},{"COUNTRY":"Rep of Macedonia","COUNTRY_CODE":"MKD","TOTAL_SCORE":0.0,"LATITUDE":41.6086,"LONGITUDE":21.7453},{"COUNTRY":"Romania","COUNTRY_CODE":"ROU","TOTAL_SCORE":7.0,"LATITUDE":45.9432,"LONGITUDE":24.9668},{"COUNTRY":"Russia","COUNTRY_CODE":"RUS","TOTAL_SCORE":7.0,"LATITUDE":61.524,"LONGITUDE":105.319},{"COUNTRY":"Rwanda","COUNTRY_CODE":"RWA","TOTAL_SCORE":0.0,"LATITUDE":-1.94028,"LONGITUDE":29.8739},{"COUNTRY":"Senegal","COUNTRY_CODE":"SEN","TOTAL_SCORE":0.0,"LATITUDE":14.4974,"LONGITUDE":-14.4524},{"COUNTRY":"Serbia","COUNTRY_CODE":"SRB","TOTAL_SCORE":0.0,"LATITUDE":44.0165,"LONGITUDE":21.0059},{"COUNTRY":"Seychelles","COUNTRY_CODE":"SYC","TOTAL_SCORE":0.0,"LATITUDE":-4.67957,"LONGITUDE":55.492},{"COUNTRY":"Sierra Leone","COUNTRY_CODE":"SLE","TOTAL_SCORE":0.0,"LATITUDE":8.46056,"LONGITUDE":-11.7799},{"COUNTRY":"Singapore","COUNTRY_CODE":"SGP","TOTAL_SCORE":8.0,"LATITUDE":1.35208,"LONGITUDE":103.82},{"COUNTRY":"Slovakia","COUNTRY_CODE":"SVK","TOTAL_SCORE":0.0,"LATITUDE":48.669,"LONGITUDE":19.699},{"COUNTRY":"Slovenia","COUNTRY_CODE":"SVN","TOTAL_SCORE":0.0,"LATITUDE":46.1512,"LONGITUDE":14.9955},{"COUNTRY":"Somalia","COUNTRY_CODE":"SOM","TOTAL_SCORE":0.0,"LATITUDE":5.15215,"LONGITUDE":46.1996},{"COUNTRY":"South Africa","COUNTRY_CODE":"ZAF","TOTAL_SCORE":0.0,"LATITUDE":-30.5595,"LONGITUDE":22.9375},{"COUNTRY":"South Korea","COUNTRY_CODE":"KOR","TOTAL_SCORE":7.0,"LATITUDE":35.9078,"LONGITUDE":127.767},{"COUNTRY":"Spain","COUNTRY_CODE":"ESP","TOTAL_SCORE":9.0,"LATITUDE":40.4637,"LONGITUDE":-3.74922},{"COUNTRY":"Sri Lanka","COUNTRY_CODE":"LKA","TOTAL_SCORE":0.0,"LATITUDE":7.87305,"LONGITUDE":80.7718},{"COUNTRY":"Sudan","COUNTRY_CODE":"SDN","TOTAL_SCORE":0.0,"LATITUDE":12.8628,"LONGITUDE":30.2176},{"COUNTRY":"Sweden","COUNTRY_CODE":"SWE","TOTAL_SCORE":6.0,"LATITUDE":60.1282,"LONGITUDE":18.6435},{"COUNTRY":"Switzerland","COUNTRY_CODE":"CHE","TOTAL_SCORE":0.0,"LATITUDE":46.8182,"LONGITUDE":8.22751},{"COUNTRY":"Syria","COUNTRY_CODE":"SYR","TOTAL_SCORE":0.0,"LATITUDE":34.8021,"LONGITUDE":38.9968},{"COUNTRY":"Taiwan, region of China","COUNTRY_CODE":"TWN","TOTAL_SCORE":3.0,"LATITUDE":23.6978,"LONGITUDE":120.961},{"COUNTRY":"Tajikistan","COUNTRY_CODE":"TJK","TOTAL_SCORE":0.0,"LATITUDE":38.861,"LONGITUDE":71.2761},{"COUNTRY":"Tanzania","COUNTRY_CODE":"TZA","TOTAL_SCORE":0.0,"LATITUDE":-6.36903,"LONGITUDE":34.8888},{"COUNTRY":"Tchad","COUNTRY_CODE":"TCD","TOTAL_SCORE":0.0,"LATITUDE":15.4542,"LONGITUDE":18.7322},{"COUNTRY":"Thailand","COUNTRY_CODE":"THA","TOTAL_SCORE":0.0,"LATITUDE":15.87,"LONGITUDE":100.993},{"COUNTRY":"Togo","COUNTRY_CODE":"TGO","TOTAL_SCORE":0.0,"LATITUDE":8.61954,"LONGITUDE":0.824782},{"COUNTRY":"Trinidad &Tobago","COUNTRY_CODE":"TTO","TOTAL_SCORE":0.0,"LATITUDE":10.6918,"LONGITUDE":-61.2225},{"COUNTRY":"Tunisia","COUNTRY_CODE":"TUN","TOTAL_SCORE":0.0,"LATITUDE":33.8869,"LONGITUDE":9.5375},{"COUNTRY":"Turkey","COUNTRY_CODE":"TUR","TOTAL_SCORE":0.0,"LATITUDE":38.9637,"LONGITUDE":35.2433},{"COUNTRY":"Turkmenistan","COUNTRY_CODE":"TKM","TOTAL_SCORE":0.0,"LATITUDE":38.9697,"LONGITUDE":59.5563},{"COUNTRY":"Uganda","COUNTRY_CODE":"UGA","TOTAL_SCORE":0.0,"LATITUDE":1.37333,"LONGITUDE":32.2903},{"COUNTRY":"UK","COUNTRY_CODE":"GBR","TOTAL_SCORE":5.0,"LATITUDE":55.3781,"LONGITUDE":-3.43597},{"COUNTRY":"Ukraine","COUNTRY_CODE":"UKR","TOTAL_SCORE":7.0,"LATITUDE":48.3794,"LONGITUDE":31.1656},{"COUNTRY":"United Arab Emirates","COUNTRY_CODE":"ARE","TOTAL_SCORE":0.0,"LATITUDE":23.4241,"LONGITUDE":53.8478},{"COUNTRY":"Uruguay","COUNTRY_CODE":"URY","TOTAL_SCORE":0.0,"LATITUDE":-32.5228,"LONGITUDE":-55.7658},{"COUNTRY":"USA","COUNTRY_CODE":"USA","TOTAL_SCORE":4.0,"LATITUDE":37.0902,"LONGITUDE":-95.7129},{"COUNTRY":"Uzbekistan","COUNTRY_CODE":"UZB","TOTAL_SCORE":0.0,"LATITUDE":41.3775,"LONGITUDE":64.5853},{"COUNTRY":"Venezuela","COUNTRY_CODE":"VEN","TOTAL_SCORE":0.0,"LATITUDE":6.42375,"LONGITUDE":-66.5897},{"COUNTRY":"Vietnam","COUNTRY_CODE":"VNM","TOTAL_SCORE":0.0,"LATITUDE":14.0583,"LONGITUDE":108.277},{"COUNTRY":"West Indies","COUNTRY_CODE":"FWI","TOTAL_SCORE":0.0,"LATITUDE":0.0,"LONGITUDE":0.0},{"COUNTRY":"Zambia","COUNTRY_CODE":"ZMB","TOTAL_SCORE":0.0,"LATITUDE":-13.1339,"LONGITUDE":27.8493},{"COUNTRY":"Zimbabwe","COUNTRY_CODE":"ZWE","TOTAL_SCORE":0.0,"LATITUDE":-19.0154,"LONGITUDE":29.1549}]'
+  
+  var mapData=JSON.parse(mapJson)
+  
+  console.log(mapData)
+  
+  var map = L.map('map').setView([30,0], 1);
+  
+  map.fitWorld().zoomIn();
+  
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+    maxZoom: 18,
+    //attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+  }).addTo(map);
+  
+  
+	// L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+	// 	maxZoom: 18,
+	// 	attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+	// 		'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+	// 		'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+	// 	id: 'mapbox.light'
+	// }).addTo(map);
+
+
+  
+  var divIcon = L.divIcon({ 
+  html: "textToDisplay"
+  })
+  
+	// control that shows state info on hover
+	var info = L.control();
+
+	info.onAdd = function (map) {
+		this._div = L.DomUtil.create('div', 'info');
+		this.update();
+		return this._div;
+	};
+
+	info.update = function (props) {
+		this._div.innerHTML = '<h4>Country Performance</h4>' +  (props ?
+			'<b>' + props.name + '</b><br />' + props.density + ' people / mi<sup>2</sup>'
+			: 'Hover over a state');
+	};
+
+	info.addTo(map);
+
+
+	// get color depending on population density value
+	function getColor(d) {
+		return d > 1000 ? '#800026' :
+				d > 500  ? '#BD0026' :
+				d > 200  ? '#E31A1C' :
+				d > 100  ? '#FC4E2A' :
+				d > 50   ? '#FD8D3C' :
+				d > 20   ? '#FEB24C' :
+				d > 10   ? '#FED976' :
+							'#FFEDA0';
+	}
+
+	function style(feature) {
+		return {
+			weight: 2,
+			opacity: 1,
+			color: 'white',
+			dashArray: '3',
+			fillOpacity: 0.7,
+			fillColor: getColor(feature.properties.density)
+		};
+	}
+
+	function highlightFeature(e) {
+		var layer = e.target;
+
+		layer.setStyle({
+			weight: 5,
+			color: '#666',
+			dashArray: '',
+			fillOpacity: 0.7
+		});
+
+		if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+			layer.bringToFront();
+		}
+
+		info.update(layer.feature.properties);
+	}
+
+	var geojson;
+
+	function resetHighlight(e) {
+		geojson.resetStyle(e.target);
+		info.update();
+	}
+
+	function zoomToFeature(e) {
+		map.fitBounds(e.target.getBounds());
+	}
+
+	function onEachFeature(feature, layer) {
+		layer.on({
+			mouseover: highlightFeature,
+			mouseout: resetHighlight,
+			click: zoomToFeature
+		});
+	}
+
+	geojson = L.geoJson(countryData, {
+		style: style,
+		onEachFeature: onEachFeature
+	}).addTo(map);
+  
+
+	map.attributionControl.addAttribution('Population data &copy; <a href="http://census.gov/">US Census Bureau</a>');
+
+
+	var legend = L.control({position: 'bottomright'});
+
+	legend.onAdd = function (map) {
+
+		var div = L.DomUtil.create('div', 'info legend'),
+			grades = [0, 10, 20, 50, 100, 200, 500, 1000],
+			labels = [],
+			from, to;
+
+		for (var i = 0; i < grades.length; i++) {
+			from = grades[i];
+			to = grades[i + 1];
+
+			labels.push(
+				'<i style="background:' + getColor(from + 1) + '"></i> ' +
+				from + (to ? '&ndash;' + to : '+'));
+		}
+
+		div.innerHTML = labels.join('<br>');
+		return div;
+	};
+
+	legend.addTo(map);
+</script>
+
+
+
+</body>
+</html>
